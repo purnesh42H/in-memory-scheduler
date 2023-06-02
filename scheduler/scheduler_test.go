@@ -9,21 +9,26 @@ import (
 )
 
 var (
-	testScheduler = New()
+	testScheduler = New(2)
+	fn1Name       = "addition"
 	fn1           = func() {
 		fmt.Printf("2 + 3 = 5\n")
 	}
-	fn2 = func() {
+
+	fn2Name = "noOp"
+	fn2     = func() {
 		fmt.Printf("No Op\n")
 	}
-	fn3 = func() {
+
+	fn3Name = "helloWorld"
+	fn3     = func() {
 		fmt.Printf("Hello World!\n")
 	}
 )
 
 func TestSchedule(t *testing.T) {
-	id1 := testScheduler.Schedule(fn1, time.Now().Add(1*time.Second))
-	id2 := testScheduler.Schedule(fn2, time.Now().Add(1*time.Second))
+	id1 := testScheduler.Schedule(fn1Name, fn1, time.Now().Add(1*time.Second))
+	id2 := testScheduler.Schedule(fn2Name, fn2, time.Now().Add(1*time.Second))
 
 	go testScheduler.Start()
 	time.Sleep(2 * time.Second)
@@ -34,8 +39,8 @@ func TestSchedule(t *testing.T) {
 }
 
 func TestScheduleAtFixedInterval(t *testing.T) {
-	id1 := testScheduler.ScheduleAtFixedInterval(fn2, 2)
-	id2 := testScheduler.ScheduleAtFixedInterval(fn3, 3)
+	id1 := testScheduler.ScheduleAtFixedInterval(fn2Name, fn2, 2)
+	id2 := testScheduler.ScheduleAtFixedInterval(fn3Name, fn3, 3)
 
 	go testScheduler.Start()
 	time.Sleep(10 * time.Second)

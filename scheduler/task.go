@@ -13,6 +13,7 @@ type status string
 
 type Task struct {
 	id         string
+	name       string
 	fn         func()
 	interval   int
 	executeAt  time.Time
